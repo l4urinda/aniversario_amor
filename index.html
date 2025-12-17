@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Aniversário amor</title>
+
+<style>
+body{
+ margin:0;
+ font-family: Arial, sans-serif;
+ background: radial-gradient(circle at top, #222, #000);
+ color:white;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ height:100vh;
+ text-align:center;
+}
+.screen{display:none; width:100%;}
+.screen.active{display:block;}
+
+button{
+ padding:14px 30px;
+ border:none;
+ border-radius:14px;
+ background:#e1062c;
+ color:white;
+ font-size:1.1em;
+ cursor:pointer;
+ margin-top:20px;
+}
+button:hover{opacity:.85}
+
+.cards{
+ display:flex;
+ justify-content:center;
+ gap:20px;
+ flex-wrap:wrap;
+}
+
+.card{
+ background:#1f1f1f;
+ padding:20px;
+ border-radius:16px;
+ width:180px;
+ cursor:pointer;
+}
+
+.lights{
+ display:flex;
+ justify-content:center;
+ gap:12px;
+ margin:20px;
+}
+.light{
+ width:28px;
+ height:28px;
+ border-radius:50%;
+ background:#400;
+}
+
+.track{
+ width:80%;
+ height:160px;
+ margin:30px auto;
+ background: repeating-linear-gradient(
+  90deg,#555,#555 20px,#444 20px,#444 40px);
+ border-radius:20px;
+ position:relative;
+ overflow:hidden;
+}
+
+#car{
+ position:absolute;
+ left:0%;
+ bottom:20px;
+ font-size:3em;
+ transition:left .4s linear;
+ transform: scaleX(-1);
+}
+
+.pole{
+ background:#222;
+ padding:40px;
+ border-radius:20px;
+ width:70%;
+ margin:auto;
+}
+</style>
+</head>
+
+<body>
+
+<div id="s1" class="screen active">
+ <h1>🎉 Feliz aniversário, meu amor! 🎉</h1>
+ <p>Enfim 26 anos!! <br> Esse ano não foi fácil, enfrentamos momentos difíceis nas nossas vidas individuais, <br> mas superamos e ainda estamos superando tudo com muito companheirismo. <br>
+ Meu desejo é que VIVA tudo que a vida pode te proporcionar, com mais paz, sonhos realizados e motivos para sorrir ao seu lado.<br> Te amo!</p>
+ <button onclick="go(2)">SEU PRESENTE AQUI</button>
+</div>
+
+<div id="s2" class="screen">
+ <h2>Para entrar no clima</h2>
+ <p>(Versão metal pro meu roqueiro)</p>
+ <p><i>*Ps: Não consegui colocar pra tocar diretamente aqui kk</i></p>
+ <a href="https://open.spotify.com/intl-pt/track/5b5dvmLUCHmFij4pRztKJk?si=7afa920b153d4817"
+    target="_blank" style="color:#1DB954;font-size:1.2em">
+ 🎧 Abrir no Spotify
+ </a><br>
+ <button onclick="go(3)">CONTINUAR</button>
+</div>
+
+<div id="s3" class="screen">
+ <h2>Escolha sua equipe 🏎️ </h2>
+ <div class="cards">
+  <div class="card" onclick="go(4)">Ferrari</div>
+  <div class="card" onclick="go(4)">Red Bull (Max Verstappen Racing)</div>
+  <div class="card" onclick="go(4)">Mercedes</div>
+ </div>
+</div>
+
+<div id="s4" class="screen">
+ <h2> Escolha seus pneus 🛞</h2>
+ <div class="cards">
+  <div class="card" onclick="go(5)">🔴 Macios</div>
+  <div class="card" onclick="go(5)">🟡 Médios</div>
+  <div class="card" onclick="go(5)">⚪️ Duros</div>
+ </div>
+</div>
+
+<div id="s5" class="screen">
+ <h2></h2>
+ <div class="lights">
+  <div class="light" id="l1"></div>
+  <div class="light" id="l2"></div>
+  <div class="light" id="l3"></div>
+  <div class="light" id="l4"></div>
+  <div class="light" id="l5"></div>
+ </div>
+ <button onclick="startRace()">LARGADA</button>
+</div>
+
+<div id="s6" class="screen">
+ <h2>🏁 ACELERAAAA!</h2>
+ <div class="track">
+  <div id="car">🏎️</div>
+ </div>
+ <p id="msg"></p>
+ <button onclick="accelerate()">ACELERAR</button>
+</div>
+
+<div id="s7" class="screen">
+ <div class="pole">
+  <h1>🏆 POLE POSITION</h1>
+  <p>Você venceu a corrida e ganhou meu coraçãoooo</p>
+  <p>Você pode retirar seus prêmios<br>
+  no dia <b>26 de dezembro às 18h </b> na estação gianetti <br> e no dia <b>27 de dezembro às 11h</b> no mesmo local <br> venha lindo e cheiroso (como sempre), com roupas confortáveis nos dois dias</p>
+ </div>
+</div>
+
+<script>
+let pos = 0;
+let idx = 0;
+
+const msgs = [
+ 'Largou com muito rock in roll 🤘🏼',
+ 'Terminando a volta 25, iniciando oficialmente a volta 26!',
+ 'Você ainda tá no meio dessa corrida louca chamada vida, viverá muitas voltas ainda',
+];
+
+function go(n){
+ document.querySelectorAll('.screen')
+  .forEach(s => s.classList.remove('active'));
+ document.getElementById('s'+n).classList.add('active');
+}
+
+async function startRace(){
+ go(5);
+
+ for(let i=1;i<=5;i++){
+  document.getElementById('l'+i).style.background = 'red';
+  await new Promise(r=>setTimeout(r,500));
+ }
+
+ await new Promise(r=>setTimeout(r,800));
+
+ for(let i=1;i<=5;i++){
+  document.getElementById('l'+i).style.background = '#400';
+ }
+
+ pos = 0;
+ idx = 0;
+ document.getElementById('car').style.left = '0%';
+
+ go(6);
+}
+
+function accelerate(){
+ pos += 20;
+ document.getElementById('car').style.left = pos + '%';
+ document.getElementById('msg').innerText =
+  msgs[idx++ % msgs.length];
+
+ if(pos >= 80){
+  go(7);
+ }
+}
+</script>
+
+</body>
+</html>
